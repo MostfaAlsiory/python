@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <title>قائمة المنتجات</title>
+</head>
+<style>
+    table {
+        width: 98%;
+        overflow: auto;
+    }
+
+    th {
+        text-align: center;
+        position: sticky;
+    }
+
+    .all_process {
+        width: 98%;
+        height: 500px;
+        margin-top: 150px;
+        background-color: rgb(207, 207, 207);
+        border: 1px solid black;
+        border-radius: 10px;
+        text-align: center;
+        float: right;
+        scroll-behavior: smooth;
+    }
+
+    .table_container {
+        width: 99%;
+        height: 50%;
+        text-align: left;
+
+    }
+</style>
+
+<body>
+
+    <div class="all_process">
+
+        <h1>قائمة المنتجات</h1>
+
+        <!-- نموذج لإضافة منتج جديد -->
+        <h2>إضافة منتج جديد</h2>
+        <form action="{{ url_for('add') }}" method="post">
+            <input type="text" name="name" placeholder="اسم المنتج" required>
+            <input type="text" name="price" placeholder="السعر" required>
+            <button type="submit">إضافة</button>
+        </form><br>
+
+        <form method="POST" action="{{ url_for('search') }}">
+            <input type="text" name="search_query" placeholder="ابحث عن منتج..." />
+            <button type="submit">بحث</button>
+        </form>
+        <div class="table_container">
+            <!-- استعراض البيانات -->
+            <table border="1">
+                <tr>
+
+                    <th>ID</th>
+                    <th>الاسم</th>
+                    <th>السعر</th>
+                    <th>تحديث</th>
+                    <th>حذف</th>
+                </tr>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>
+                        <form action="{{ url_for('update') }}" method="post">
+                            <input type="hidden" name="id" value="{{ product.id }}">
+                            <input type="text" name="name" value="{{ product.name }}">
+                            <input type="text" name="price" value="{{ product.price }}">
+                            <button type="submit">تحديث</button>
+                        </form>
+
+                    </td>
+                    <td>
+
+                        <form action="{{ url_for('delete') }}" method="post">
+                            <input type="hidden" name="id" value="{{ product.id }}">
+                            <button type="submit">حذف</button>
+                        </form>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
