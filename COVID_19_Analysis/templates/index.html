@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Analytics</title>
+    <style>
+        .analysis_container {
+            width: 95%;
+            height: 600px;
+
+            border: 1px solid black;
+        }
+
+        .ana2 {
+            width: 35%;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 20px;
+            float: right;
+            padding-top: 10px;
+            margin-top: 10px;
+            padding-right: 10px;
+            margin-right: 20px;
+        }
+
+        .ana1 {
+            width: 35%;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 20px;
+            padding-top: 10px;
+            margin-top: 10px;
+            padding-right: 10px;
+            float: left;
+
+        }
+
+        .data {
+
+            width: 20%;
+            height: 400px;
+            overflow: scroll;
+            float: left;
+            margin-left: 10px;
+            margin-right: 3%;
+        }
+
+        .entris {
+            width: 99%;
+            height: 15%;
+            border: 1px solid black;
+            padding-left: 20%;
+            padding-top: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>COVID-19 Analytics</h1>
+    <div class="analysis_container">
+        <div class="entris">
+            <form method="POST">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" style="height: 40px;width: 150px;border-radius: 10px;"
+                    required>
+
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" style="height: 40px;width: 150px;border-radius: 10px;"
+                    name="start_date" required>
+
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" style="height: 40px;width: 150px;border-radius: 10px;" name="end_date"
+                    required>
+
+                <button style="margin-left: 10%;width: 150px;height: 40px;" type="submit">Search</button>
+                <br>
+                <p>{{country}}</p>
+        </div>
+        <div class="data">
+            {% if records %}
+            <h2>Data Records</h2>
+            <table border="1">
+                <tr>
+                    <th>Date</th>
+                    <th>Country</th>
+                    <th>Total Cases</th>
+                    <th>Total Deaths</th>
+                </tr>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.country }}</td>
+                    <td>{{ record.total_cases }}</td>
+                    <td>{{ record.total_deaths }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="ana2">
+            </form>
+
+            {% if analytics %}
+            <h2>Analytics</h2>
+            <ul>
+                <li>Total Cases: {{ analytics.total_cases }}</li>
+                <li>Total Deaths: {{ analytics.total_deaths }}</li>
+                <li>Case Fatality Rate (CFR): {{ analytics.cfr }}%</li>
+                <li>Most Critical Day (Highest Cases):
+                    {{ analytics.max_cases_day.date }} -
+                    {{ analytics.max_cases_day.cases }} Cases
+                </li>
+                <li>Most Critical Day (Highest Deaths):
+                    {{ analytics.max_deaths_day.date }} -
+                    {{ analytics.max_deaths_day.deaths }} Deaths
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+        <div class="ana1">
+            {% if chart_path %}
+            <h2>Trend Chart</h2>
+            <img src="{{ chart_path }}" alt="COVID-19 Chart">
+            {% endif %}
+        </div>
+    </div>
+
+
+</body>
+
+</html>
